@@ -12,8 +12,13 @@ PASSWORD = "12345678"
 ENDPOINT = "http://srv3.enteam.pl:3012/insert"
 INTERVAL = 1
 
+PROPANE_PIN = 1
+AMMONIA_PIN = 2
+
 # App
 
+propane_adc = machine.ADC(PROPANE_PIN)
+ammonia_adc = machine.ADC(AMMONIA_PIN)
 
 def info(*message):
     output = ""
@@ -53,13 +58,11 @@ def insert(propane_level, ammonia_level):
     info("Sending data: ", post_data)
     res = urequests.post(ENDPOINT, headers={"content-type": "application/json"}, data=post_data).json()
 
-# insert(36, 11)
-
 def read_propane_level():
-    return 37
+    return propane_adc.read()
 
 def read_ammonia_level():
-    return 42
+    return ammonia_adc.read()
 
 info("Starting main loop with interval: ", INTERVAL)
 
